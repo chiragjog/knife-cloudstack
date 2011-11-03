@@ -1,0 +1,90 @@
+= Knife Cloudstack
+
+= DESCRIPTION:
+
+This is the unofficial Opscode Knife plugin for Cloudstack Cloud. This plugin gives knife the ability to create, bootstrap, and manage instances in Cloudstack Compute clouds.
+
+= INSTALLATION:
+
+Be sure you are running the latest version Chef. Versions earlier than 0.10.0 don't support plugins:
+
+    $ gem install chef
+
+Also ensure you are running the latest version of Fog. Versions earlier than 1.0.0 don't support Cloudstack Cloud:
+    
+    $ gem update fog 
+ 
+This plugin is distributed as a Ruby Gem. To install it, run:
+
+    $ gem install knife-cloudstack
+
+Depending on your system's configuration, you may need to run this command with root privileges.
+
+= CONFIGURATION:
+
+In order to communicate with an Cloudstack Compute cloud's CLOUDSTACK API you will have to tell Knife about your Cloudstack Compute cloud API endpoint, Cloudstack Access Key and Secret Access Key.  The easiest way to accomplish this is to create some entries in your <tt>knife.rb</tt> file:
+
+    ### Note: You may need to append the :cloudstack_access_key_id with ":$PROJECT_NAME", if it differs from your Cloudstack Username.
+    knife[:cloudstack_access_key_id]     = "Your Cloudstack Access Key ID"
+    knife[:cloudstack_secret_access_key] = "Your Cloudstack Secret Access Key"
+    ### Note: If you are not proxying HTTPS to the Cloudstack CLOUDSTACK API port, the scheme should be HTTP, and the PORT is 8773.
+    knife[:cloudstack_api_endpoint]      = "https://cloud.mycompany.com/service/Cloud"
+
+If your knife.rb file will be checked into a SCM system (ie readable by others) you may want to read the values from environment variables:
+
+    knife[:cloudstack_access_key_id]     = "#{ENV['CLOUDSTACK_ACCESS_KEY']}"
+    knife[:cloudstack_secret_access_key] = "#{ENV['CLOUDSTACK_SECRET_KEY']}"
+    knife[:cloudstack_api_endpoint]      = "#{ENV['CLOUDSTACK_URL']}"
+
+You also have the option of passing your Cloudstack API Key/Secret into the individual knife subcommands using the <tt>-A</tt> (or <tt>--cloudstack-access-key-id</tt>) <tt>-K</tt> (or <tt>--cloudstack-secret-access-key</tt>) command options
+
+    # provision a new webserver
+    knife cloudstack server create 'role[webserver]' -I <image template> -f <service offering> -A 'Your Cloudstack Access Key ID'  --cloudstack-api-endpoint 'https://cloud.mycompany.com/v1.0'
+
+Additionally the following options may be set in your `knife.rb`:
+
+* flavor
+* image
+* availability_zone
+
+= SUBCOMMANDS:
+
+This plugin provides the following Knife subcommands.  Specific command options can be found by invoking the subcommand with a <tt>--help</tt> flag
+
+== knife cloudstack server create
+
+Provisions a new server in an Cloudstack Compute cloud and then perform a Chef bootstrap (using the SSH protocol).  The goal of the bootstrap is to get Chef installed on the target system so it can run Chef Client with a Chef Server. The main assumption is a baseline OS installation exists (provided by the provisioning). It is primarily intended for Chef Client systems that talk to a Chef server.  By default the server is bootstrapped using the {ubuntu10.04-gems}[https://github.com/opscode/chef/blob/master/chef/lib/chef/knife/bootstrap/ubuntu10.04-gems.erb] template.  This can be overridden using the <tt>-d</tt> or <tt>--template-file</tt> command options.
+
+== knife cloudstack server delete
+
+Deletes an existing server in the currently configured Cloudstack Compute cloud account.  <b>PLEASE NOTE</b> - this does not delete the associated node and client objects from the Chef server.
+
+== knife cloudstack server list
+
+Outputs a list of all servers in the currently configured Cloudstack Compute cloud account.  <b>PLEASE NOTE</b> - this shows all instances associated with the account, some of which may not be currently managed by the Chef server.
+
+== knife cloudstack flavor list
+
+Outputs a list of all available flavors (available hardware configuration for a server) available to the currently configured Cloudstack Compute cloud account.  Each flavor has a unique combination of disk space, memory capacity and priority for CPU time.  This data can be useful when choosing a flavor id to pass to the <tt>knife cloudstack server create</tt> subcommand.
+
+== knife cloudstack image list
+
+Outputs a list of all available images available to the currently configured Cloudstack Compute cloud account.  An image is a collection of files used to create or rebuild a server. This data can be useful when choosing an image id to pass to the <tt>knife cloudstack server create</tt> subcommand.
+
+= LICENSE:
+
+Author:: Chirag Jog (<chirag@clogeny.com>)
+Copyright:: Copyright (c) 2011 Clogeny
+License:: Apache License, Version 2.0
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
