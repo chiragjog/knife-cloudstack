@@ -62,10 +62,10 @@ class Chef
       def connection
         @connection ||= begin
           connection = Fog::Compute.new(
-            :provider => 'Cloudstack',
-            :cloudstack_compute_key => Chef::Config[:knife][:cloudstack_access_key_id],
-            :cloudstack_compute_secret => Chef::Config[:knife][:cloudstack_secret_access_key],
-            :cloudstack_api_url => Chef::Config[:knife][:cloudstack_api_endpoint]
+            :provider => 'Ninefold',
+            :ninefold_compute_key => Chef::Config[:knife][:cloudstack_access_key_id],
+            :ninefold_compute_secret => Chef::Config[:knife][:cloudstack_secret_access_key],
+            :ninefold_api_url => Chef::Config[:knife][:cloudstack_api_endpoint]
           )
         end
       end

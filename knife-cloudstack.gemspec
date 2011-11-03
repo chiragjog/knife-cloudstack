@@ -4,14 +4,14 @@ require "knife-cloudstack/version"
 
 Gem::Specification.new do |s|
   s.name        = "knife-cloudstack"
-  s.version     = Knife::Ninefold::VERSION
+  s.version     = Knife::Cloudstack::VERSION
   s.platform    = Gem::Platform::RUBY
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.rdoc", "LICENSE" ]
   s.authors     = ["Chirag Jog"]
   s.email       = ["chirag@clogeny.com"]
   s.homepage    = "https://github.com/chiragjog/knife-cloudstack"
-  s.summary     = %q{Ninefold Compute Support for Chef's Knife Command}
+  s.summary     = %q{Cloudstack Compute Support for Chef's Knife Command}
   s.description = s.summary
 
   s.files         = `git ls-files`.split("\n")

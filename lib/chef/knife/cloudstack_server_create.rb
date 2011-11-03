@@ -62,18 +62,18 @@ class Chef
       option :identity_file,
         :short => "-i IDENTITY_FILE",
         :long => "--identity-file IDENTITY_FILE",
-        :description => "The SSH identity file used for authentication"
+        :description => "The SSH identity file used for authentication",
         :proc => Proc.new { |key| Chef::Config[:knife][:identity_file] = key }
 
       option :prerelease,
         :long => "--prerelease",
-        :description => "Install the pre-release chef gems"
+        :description => "Install the pre-release chef gems",
         :proc => Proc.new { |key| Chef::Config[:knife][:prerelease] = key }
 
       option :bootstrap_version,
         :long => "--bootstrap-version VERSION",
         :description => "The version of Chef to install",
-        :proc => Proc.new { |v| Chef::Config[:knife][:bootstrap_version] = v }
+        :proc => Proc.new { |v| Chef::Config[:knife][:bootstrap_version] = v },
 	:default => "0.10.4"
 
       option :distro,
@@ -127,10 +127,10 @@ class Chef
         validate!
 
         connection = Fog::Compute.new(
-          :provider => 'Cloudstack',
-          :cloudstack_compute_key => Chef::Config[:knife][:cloudstack_access_key_id],
-          :cloudstack_compute_secret => Chef::Config[:knife][:cloudstack_secret_access_key],
-          :cloudstack_api_url => Chef::Config[:knife][:cloudstack_api_endpoint]
+          :provider => 'Ninefold',
+          :ninefold_compute_key => Chef::Config[:knife][:cloudstack_access_key_id],
+          :ninefold_compute_secret => Chef::Config[:knife][:cloudstack_secret_access_key],
+          :ninefold_api_url => Chef::Config[:knife][:cloudstack_api_endpoint]
         )
 
         server_def = {

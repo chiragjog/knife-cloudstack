@@ -46,7 +46,6 @@ class Chef
           ui.color('State', :bold)
         ]
         connection.servers.all.each do |server|
-	  puts("\n")
 	  public_ip = ""
           server_list << server.id.to_s
           server_list << server.displayname.to_s
